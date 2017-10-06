@@ -38,6 +38,7 @@ impl WindowServer
     }
     pub fn process_events(&self)
     {
+        self.flush();
         while let Some(e) = self.connection.wait_event()
         {
             match e.response_type()
