@@ -54,10 +54,10 @@ impl WindowServer
 
     // Ferrite Integration //
     #[cfg(feature = "with_ferrite")]
-	pub fn presentation_support(&self, adapter: &fe::PhysicalDevice, rendered_qf: u32) -> bool
-	{
-		adapter.xcb_presentation_support(rendered_qf, self.connection.inner(), self.visual)
-	}
+    pub fn presentation_support(&self, adapter: &fe::PhysicalDevice, rendered_qf: u32) -> bool
+    {
+        adapter.xcb_presentation_support(rendered_qf, self.connection.inner(), self.visual)
+    }
     #[cfg(feature = "with_ferrite")]
     pub fn new_render_surface(&self, native: &NativeWindow, apicontext: &fe::Instance) -> fe::Result<fe::Surface>
     {
@@ -68,12 +68,12 @@ impl WindowServer
 pub struct NativeWindow(x11::Window<'static>);
 impl NativeWindow
 {
-    pub fn new() -> Self
+    pub fn new(initial_size: (u16, u16), caption: &str) -> Self
     {
-        let w = x11::WindowBuilder::new(&WindowServer::instance().screen).size((640, 360))
+        let w = x11::WindowBuilder::new(&WindowServer::instance().screen).size(initial_size)
             .visual(32, WindowServer::instance().visual).back_pixel(0).border_pixel(0)
             .colormap(&WindowServer::instance().cmap).create(&WindowServer::instance().connection);
-        w.replace_property(x11::XCB_ATOM_WM_NAME, "UTAEdit");
+        w.replace_property(x11::XCB_ATOM_WM_NAME, caption);
     	WindowServer::instance().connection.flush();
         NativeWindow(w)
     }
