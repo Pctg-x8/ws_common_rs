@@ -1,0 +1,13 @@
+[package]
+name = "ws_common"
+version = "0.1.0"
+authors = ["S.Percentage <Syn.Tri.Naga@gmail.com>"]
+description = "Window System CommonOps"
+
+[features]
+target_x11 = ["xcb"]
+
+[dependencies]
+libc = "^0.2"
+xcb = { version = "~0.8", optional = true }
+metrics = { git = "https://github.com/Pctg-x8/metrics.git" }
