@@ -51,6 +51,7 @@ impl WindowServer
             }
         }
     }
+    pub fn flush(&self) { self.connection.flush(); }
 
     // Ferrite Integration //
     #[cfg(feature = "with_ferrite")]
