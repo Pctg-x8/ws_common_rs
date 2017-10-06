@@ -2,8 +2,7 @@
 
 use wxcb as x11;
 use wxcb::Drawable;
-use RenderDevice;
-use ferrite as fe;
+#[cfg(feature = "with_ferrite")] use ferrite as fe;
 
 pub struct Atoms
 {
@@ -53,15 +52,16 @@ impl WindowServer
         }
     }
 
-    // RenderDevice Integration //
-	pub fn presentation_support(&self) -> bool
+    // Ferrite Integration //
+    #[cfg(feature = "with_ferrite")]
+	pub fn presentation_support(&self, adapter: &fe::PhysicalDevice, rendered_qf: u32) -> bool
 	{
-		RenderDevice::instance().adapter()
-			.xcb_presentation_support(RenderDevice::instance().graphics_queue_family(), self.connection.inner(), self.visual)
+		adapter.xcb_presentation_support(rendered_qf, self.connection.inner(), self.visual)
 	}
-    pub fn new_render_surface(&self, native: &NativeWindow) -> fe::Result<fe::Surface>
+    #[cfg(feature = "with_ferrite")]
+    pub fn new_render_surface(&self, native: &NativeWindow, apicontext: &fe::Instance) -> fe::Result<fe::Surface>
     {
-        fe::Surface::new_xcb(RenderDevice::instance().apicontext(), self.connection.inner(), native.0.id())
+        fe::Surface::new_xcb(apicontext, self.connection.inner(), native.0.id())
     }
 }
 

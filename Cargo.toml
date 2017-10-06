@@ -6,8 +6,10 @@ description = "Window System CommonOps"
 
 [features]
 target_x11 = ["xcb"]
+with_ferrite = ["ferrite"]
 
 [dependencies]
 libc = "^0.2"
 xcb = { version = "~0.8", optional = true }
+ferrite = { git = "https://github.com/Pctg-x8/ferrite.git", optional = true }
 metrics = { git = "https://github.com/Pctg-x8/metrics.git" }
