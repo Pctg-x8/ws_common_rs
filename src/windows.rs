@@ -79,6 +79,6 @@ impl WindowServer
     }
     pub fn new_render_surface(&self, native: &NativeWindow, apicontext: &fe::Instance) -> fe::Result<fe::Surface>
     {
-        fe::Surface::new_win32(apicontext, unsafe { GetModuleHandleA(null()) }, self.0)
+        fe::Surface::new_win32(apicontext, unsafe { GetModuleHandleA(null()) }, native.0)
     }
 }
