@@ -25,12 +25,13 @@ extern "system"
 pub struct NativeWindow(HWND);
 impl NativeWindow
 {
-    pub fn new(initial_size: (u16, u16), caption: &str) -> Self
+    pub fn new(initial_size: (u16, u16), caption: &str, nocontent: bool) -> Self
     {
         let capz = CString::new(caption).unwrap();
+        let flags = if nocontent { WS_EX_NOREDIRECTIONBITMAP } else { 0 };
         let w = unsafe
         {
-            CreateWindowExA(WS_EX_NOREDIRECTIONBITMAP, transmute(WindowServer::instance().wc as usize), capz.as_ptr(), WS_OVERLAPPEDWINDOW,
+            CreateWindowExA(flags, transmute(WindowServer::instance().wc as usize), capz.as_ptr(), WS_OVERLAPPEDWINDOW,
                 CW_USEDEFAULT, CW_USEDEFAULT, initial_size.0 as _, initial_size.1 as _, null_mut(), null_mut(), GetModuleHandleA(null()), null_mut())
         };
         if w.is_null() { panic!("Failed to create window"); }
