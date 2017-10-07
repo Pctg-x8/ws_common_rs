@@ -43,6 +43,8 @@ impl NativeWindow
         unsafe { GetClientRect(self.0, &mut r) };
         ((r.right - r.left) as _, (r.bottom - r.top) as _)
     }
+
+    pub fn native(&self) -> HWND { self.0 }
 }
 
 pub struct WindowServer { wc: ATOM }
