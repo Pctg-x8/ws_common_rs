@@ -6,6 +6,22 @@ use std::ptr::{null, null_mut};
 use std::ffi::CString;
 #[cfg(feature = "with_ferrite")] use ferrite as fe;
 
+extern "system"
+{
+    fn RegisterClassExA(wce: &WNDCLASSEXA) -> ATOM;
+}
+#[allow(non_snake_case)]
+#[repr(C)] pub struct WNDCLASSEXA
+{
+    pub cbSize: UINT,
+    /* Win 3.x */
+    pub style: UINT, pub lpfnWndProc: WNDPROC, pub cbClsExtra: c_int, pub cbWndExtra: c_int,
+    pub hInstance: HINSTANCE, pub hIcon: HICON, pub hCursor: HCURSOR, pub hbrBackground: HBRUSH,
+    pub lpszMenuName: LPCSTR, pub lpszClassName: LPCSTR,
+    /* Win 4.0 */
+    pub hIconSm: HICON
+}
+
 pub struct NativeWindow(HWND);
 impl NativeWindow
 {
@@ -39,9 +55,9 @@ impl WindowServer
     {
         unsafe
         {
-            let wc = RegisterClassExW(&WNDCLASSEXW
+            let wc = RegisterClassExA(&WNDCLASSEXA
             {
-                cbSize: size_of::<WNDCLASSEXW>() as _, hInstance: GetModuleHandleA(null()),
+                cbSize: size_of::<WNDCLASSEXA>() as _, hInstance: GetModuleHandleA(null()),
                 lpfnWndProc: Some(Self::messages), lpszClassName: Self::WNDCLASS_NAME.as_ptr() as _, hCursor: LoadCursorA(null_mut(), IDC_ARROW as _),
                 style: CS_OWNDC, .. zeroed()
             });
