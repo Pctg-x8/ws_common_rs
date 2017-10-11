@@ -70,7 +70,7 @@ impl WindowServer
 pub struct NativeWindow(x11::Window<'static>);
 impl NativeWindow
 {
-    pub fn new(initial_size: (u16, u16), caption: &str) -> Self
+    pub fn new(initial_size: (u16, u16), caption: &str, nocontent: bool) -> Self
     {
         let w = x11::WindowBuilder::new(&WindowServer::instance().screen).size(initial_size)
             .visual(32, WindowServer::instance().visual).back_pixel(0).border_pixel(0)
